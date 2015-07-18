@@ -1,8 +1,10 @@
 package com.lok.appcontroller;
 
-import java.util.Vector;
+import java.util.HashMap;
 
 public class AppsParameters {
+    public static String PARAM_FILE_PATH = "/data/setting.json";
+
     public static String BOARD_VAL = "GX7V66";
     public static String BRAND_VAL = "hongmi";
     public static String CPU_ABI2_VAL = "CE0RYDUU82Q5R";
@@ -27,5 +29,6 @@ public class AppsParameters {
     public static String SERIAL_VAL = "2UXCGZBH6R19IYZ3";
     public static String SecureString_VAL = "g12:abcdefghijk";
     public static String SimSerialNumber_VAL = "898607060535783807";
-    public static int WIDTH_PIX = 500;
+
+    public static HashMap<String, String> params = new HashMap<String, String>();
 }
