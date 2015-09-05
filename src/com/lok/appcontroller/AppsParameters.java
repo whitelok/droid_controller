@@ -14,12 +14,12 @@ public class AppsParameters {
     public static String DISPLAY_VAL = "7EE871";
     public static int HEIGHT_PIX = 900;
     public static String ID_VAL = "WT3LBZWMV2WS";
-    public static String IMEI_VAL = "978679798984998";
+    public static String IMEI_VAL = Utils.getRandomIMEI();
     public static String IMSI_VAL = "460000975469348";
     public static String Language_VAL = "zh";
     public static String MACADDR_VAL = "29:75:49:48:37:56";
     public static String MANUFACTURER_VAL;
-    public static String MODEL_VAL = "X385UPNCU";
+    public static String MODEL = "X385UPNCU";
     public static String NetworkOperatorName_VAL;
     public static String NetworkOperator_VAL = "46000111";
     public static String NetworkType_VAL = "89860456456456456";

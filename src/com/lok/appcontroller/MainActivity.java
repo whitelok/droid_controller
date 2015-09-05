@@ -18,6 +18,7 @@ public class MainActivity extends Activity {
     // private String MANUFACTURER;
     private String ANDROID_ID;
     private String SERIAL_NUMBER;
+    private String MODEL_NUMBER;
     private String MCC;
     private String MNC;
     private String MAC_ADDR;
@@ -28,6 +29,7 @@ public class MainActivity extends Activity {
     private TextView phonenoTV;
     private TextView didTV;
     private TextView serialnoTV;
+    private TextView modelnoTV;
     private TextView mccTV;
     private TextView mncTV;
 
@@ -51,6 +53,7 @@ public class MainActivity extends Activity {
                 getContentResolver(),
                 android.provider.Settings.Secure.ANDROID_ID);
         SERIAL_NUMBER = android.os.Build.SERIAL;
+        MODEL_NUMBER = android.os.Build.MODEL;
         MCC = String.valueOf(cfg.mcc);
         MNC = String.valueOf(cfg.mnc);
     }
@@ -61,14 +64,20 @@ public class MainActivity extends Activity {
         phonenoTV = (TextView) findViewById(R.id.phone_no);
         didTV = (TextView) findViewById(R.id.did_str);
         serialnoTV = (TextView) findViewById(R.id.serial_number);
+        modelnoTV = (TextView) findViewById(R.id.model_number);
         mccTV = (TextView) findViewById(R.id.mcc_str);
         mncTV = (TextView) findViewById(R.id.mnc_str);
 
+        setTVValue();
+    }
+
+    private void setTVValue() {
         imeiTV.setText(IMEI);
         imsiTV.setText(IMSI);
         phonenoTV.setText(PHONE_NO);
         didTV.setText(ANDROID_ID);
         serialnoTV.setText(SERIAL_NUMBER);
+        modelnoTV.setText(MODEL_NUMBER);
         mccTV.setText(MCC);
         mncTV.setText(MNC);
     }
@@ -81,21 +90,12 @@ public class MainActivity extends Activity {
     @Override
     public void onResume() {
         initInfo();
-        imeiTV.setText(IMEI);
+        setTVValue();
         super.onResume();
     }
 
     @Override
     public void onPause() {
-        try {
-            FileLoaderBaseVersion initLoder = new FileLoaderBaseVersion(
-                    "/data/setting.json");
-            initLoder.start();
-            initLoder.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        imeiTV.setText("");
         super.onPause();
     }
 

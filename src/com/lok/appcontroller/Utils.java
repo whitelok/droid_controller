@@ -13,10 +13,8 @@ import android.util.Log;
 
 import com.lok.appcontroller.model.FileLoaderBaseVersion;
 
-import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
-import static de.robv.android.xposed.XposedHelpers.*;
 
 public class Utils {
     public static String TAG = "Utils";
@@ -31,6 +29,7 @@ public class Utils {
 
     /**
      * 生成指定长度的数字串
+     * 
      * @param paramInt
      * @return
      */
@@ -47,7 +46,9 @@ public class Utils {
 
     /**
      * 生成十六进制串
-     * @param paramInt 串长度
+     * 
+     * @param paramInt
+     *            串长度
      * @return
      */
     public static String getRandomHEXString(int paramInt) {
@@ -63,6 +64,7 @@ public class Utils {
 
     /**
      * 生成随机IMEI
+     * 
      * @return
      */
     public static String getRandomIMEI() {
@@ -71,6 +73,7 @@ public class Utils {
 
     /**
      * 生成随机IMSI
+     * 
      * @return
      */
     public static String getRandomIMSI() {
@@ -87,23 +90,8 @@ public class Utils {
     }
 
     /**
-     * 生成MAC地址
-     * @return
-     */
-    public static String getRandomMACAddr() {
-        StringBuffer localStringBuffer1 = new StringBuffer();
-        int i = 0;
-        while (true) {
-            if (i >= 6)
-                return localStringBuffer1.toString();
-            String str = getRandomHEXString(2);
-            StringBuffer localStringBuffer2 = localStringBuffer1.append(str);
-            i += 1;
-        }
-    }
-
-    /**
      * 生成电话号码
+     * 
      * @return
      */
     public static String getRandomPHONENUM() {
@@ -144,25 +132,27 @@ public class Utils {
         int i = arrayOfString.length;
         int j = localRandom.nextInt(i);
         String str1 = arrayOfString[j];
-        StringBuilder localStringBuilder2 = localStringBuilder1.append(str1);
+        localStringBuilder1.append(str1);
         String str2 = getRandomDigit(8);
-        StringBuilder localStringBuilder3 = localStringBuilder1.append(str2);
+        localStringBuilder1.append(str2);
         return localStringBuilder1.toString();
     }
 
     /**
      * 生成随机串号
+     * 
      * @return
      */
     public static String getRandomSERIAL() {
         StringBuilder localStringBuilder1 = new StringBuilder();
         String str = getRandomString(new Random().nextInt(15) % 11 + 5);
-        StringBuilder localStringBuilder2 = localStringBuilder1.append(str);
+        localStringBuilder1.append(str);
         return localStringBuilder1.toString();
     }
 
     /**
      * 生成随机sim卡串行号
+     * 
      * @return
      */
     public static String getRandomSimSerialNumber() {
@@ -174,14 +164,15 @@ public class Utils {
         int i = arrayOfString.length;
         int j = localRandom.nextInt(i);
         String str1 = arrayOfString[j];
-        StringBuilder localStringBuilder2 = localStringBuilder1.append(str1);
+        localStringBuilder1.append(str1);
         String str2 = getRandomDigit(14);
-        StringBuilder localStringBuilder3 = localStringBuilder1.append(str2);
+        localStringBuilder1.append(str2);
         return localStringBuilder1.toString();
     }
 
-    // 生成随机字符串
     /**
+     * 生成随机字符串
+     * 
      * @param paramInt
      * @return
      */
@@ -195,13 +186,14 @@ public class Utils {
             int j = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".length();
             int k = localRandom.nextInt(j);
             char c = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".charAt(k);
-            StringBuffer localStringBuffer2 = localStringBuffer1.append(c);
+            localStringBuffer1.append(c);
             i += 1;
         }
     }
 
-    // 修改IMEI
     /**
+     * modify IMEI
+     * 
      * @param lpparam
      */
     public static void handleIMEI(final LoadPackageParam lpparam) {
@@ -213,76 +205,19 @@ public class Utils {
                                 throws Throwable {
                             Log.d(TAG + "-" + "handleIMEI", new Exception()
                                     .getStackTrace()[0].getMethodName());
-                            FileLoaderBaseVersion imeiLoader = new FileLoaderBaseVersion(
-                                    AppsParameters.PARAM_FILE_PATH);
-                            String IMEI_VAL = imeiLoader.loadKeyValue("IMEI");
-                            Log.d(TAG, "Replace value:" + IMEI_VAL);
-                            param.setResult(IMEI_VAL);
-                        }
-                    });
-        } catch (Exception e) {
-            Log.e(TAG, lpparam.packageName + " has error:" + e.toString());
-        }
-    }
-
-    private static char hexDigits[] = { '0', '1', '2', '3', '4', '5', '6', '7',
-            '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
-
-    /**
-     * @param lpparam
-     */
-    public static void handleKuaishouCPU(final LoadPackageParam lpparam) {
-        if (!lpparam.packageName.startsWith("com")) {
-            return;
-        }
-
-        System.out.println("whitelok: " + lpparam.packageName);
-
-        // XposedBridge.hookMethod("getclock", null);
-
-        try {
-            findAndHookMethod("java.lang.StringBuilder", lpparam.classLoader,
-                    "toString", new XC_MethodHook() {
-                        @Override
-                        protected void afterHookedMethod(MethodHookParam param)
-                                throws Throwable {
+                            String IMEI_VAL = "";
                             try {
-                                // System.out.println("one");
-                                // System.out.println("whitelok: "
-                                // + param.getResult());
+                                FileLoaderBaseVersion imeiLoader = new FileLoaderBaseVersion(
+                                        AppsParameters.PARAM_FILE_PATH);
+                                IMEI_VAL = imeiLoader.loadKeyValue("IMEI");
                             } catch (Exception e) {
-                                // System.out.println("DAMM");
+                                IMEI_VAL = getRandomIMEI();
+                            } finally {
+                                Log.d(TAG, "Replace value:" + IMEI_VAL);
+                                param.setResult(IMEI_VAL);
                             }
-                            // param.setResult("12345678909876");
-                            // System.out.println("two");
                         }
                     });
-
-        } catch (Exception e) {
-            Log.e(TAG,
-                    "whitelok: " + lpparam.packageName + " has error:"
-                            + e.toString());
-        }
-    }
-
-    /**
-     * @param lpparam
-     */
-    public static void handleMD5(final LoadPackageParam lpparam) {
-
-        findClass("java.security.MessageDigest", lpparam.classLoader);
-
-        try {
-            findAndHookMethod("java.security.MessageDigest",
-                    lpparam.classLoader, "update", new XC_MethodReplacement() {
-
-                        @Override
-                        protected Object replaceHookedMethod(
-                                MethodHookParam param) throws Throwable {
-                            return null;
-                        }
-                    });
-
         } catch (Exception e) {
             Log.e(TAG, lpparam.packageName + " has error:" + e.toString());
         }
@@ -310,13 +245,52 @@ public class Utils {
         }
     }
 
-    public static void handleSERIAL(XC_LoadPackage.LoadPackageParam lpparam,
-            String ctrlFilePath) {
+    /**
+     * modify MODEL
+     * @param lpparam
+     */
+    public static void handleMODEL(XC_LoadPackage.LoadPackageParam lpparam) {
         try {
-            XposedHelpers.setStaticObjectField(Build.class, "SERIAL",
-                    AppsParameters.SERIAL_VAL);
-            XposedHelpers.setStaticObjectField(Build.class, "MODEL",
-                    AppsParameters.MODEL_VAL);
+            Log.d(TAG + "-" + "handleMODEL",
+                    new Exception().getStackTrace()[0].getMethodName());
+            String MODEL_VAL = "";
+            try {
+                FileLoaderBaseVersion imeiLoader = new FileLoaderBaseVersion(
+                        AppsParameters.PARAM_FILE_PATH);
+                MODEL_VAL = imeiLoader.loadKeyValue("MODEL");
+            } catch (Exception e) {
+                MODEL_VAL = getRandomSERIAL();
+            } finally {
+                XposedHelpers.setStaticObjectField(Build.class, "MODEL",
+                        MODEL_VAL);
+            }
+        } catch (Exception e) {
+            Log.e(TAG, lpparam.packageName + " has error:" + e.toString());
+        }
+    }
+    
+    /**
+     * modify SERIAL
+     * @param lpparam
+     */
+    public static void handleSERIAL(XC_LoadPackage.LoadPackageParam lpparam) {
+        try {
+            Log.d(TAG + "-" + "handleSERIAL",
+                    new Exception().getStackTrace()[0].getMethodName());
+            String SERIAL_VAL = "";
+            try {
+                FileLoaderBaseVersion imeiLoader = new FileLoaderBaseVersion(
+                        AppsParameters.PARAM_FILE_PATH);
+                SERIAL_VAL = imeiLoader.loadKeyValue("SERIAL");
+            } catch (Exception e) {
+                SERIAL_VAL = getRandomSERIAL();
+            } finally {
+                XposedHelpers.setStaticObjectField(Build.class, "SERIAL",
+                        SERIAL_VAL);
+            }
+
+            // XposedHelpers.setStaticObjectField(Build.class, "MODEL",
+            // AppsParameters.MODEL_VAL);
         } catch (Exception e) {
             Log.e(TAG, lpparam.packageName + " has error:" + e.toString());
         }
@@ -324,16 +298,15 @@ public class Utils {
 
     public static void handleSimSerialNumber(final LoadPackageParam lpparam,
             String ctrlFilePath) {
-
     }
 
     public static void initValues() {
         AppsParameters.IMEI_VAL = getRandomIMEI();
         AppsParameters.IMSI_VAL = getRandomIMSI();
-        AppsParameters.MACADDR_VAL = getRandomMACAddr();
+        AppsParameters.MACADDR_VAL = "12:12:12:12:12:12";
         AppsParameters.SERIAL_VAL = getRandomSERIAL();
         AppsParameters.PHONE_NUM = getRandomPHONENUM();
-        AppsParameters.MODEL_VAL = getRandomSERIAL();
+        AppsParameters.MODEL = getRandomSERIAL();
         AppsParameters.ID_VAL = getRandomSERIAL();
         AppsParameters.DISPLAY_VAL = getRandomSERIAL();
         AppsParameters.PRODUCT_VAL = getRandomSERIAL();
