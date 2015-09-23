@@ -22,7 +22,7 @@ public class MainActivity extends Activity {
     private String MCC;
     private String MNC;
     private String MAC_ADDR;
-    private static String tostring;
+    private String PHONE_NUMBER;
 
     private TextView imeiTV;
     private TextView imsiTV;
@@ -54,6 +54,7 @@ public class MainActivity extends Activity {
                 android.provider.Settings.Secure.ANDROID_ID);
         SERIAL_NUMBER = android.os.Build.SERIAL;
         MODEL_NUMBER = android.os.Build.MODEL;
+        PHONE_NUMBER = tm.getLine1Number();
         MCC = String.valueOf(cfg.mcc);
         MNC = String.valueOf(cfg.mnc);
     }

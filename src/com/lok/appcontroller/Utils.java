@@ -45,7 +45,7 @@ public class Utils {
     }
 
     /**
-     * 生成十六进制串
+     * 生成十六进制串-
      * 
      * @param paramInt
      *            串长度
@@ -94,7 +94,7 @@ public class Utils {
      * 
      * @return
      */
-    public static String getRandomPHONENUM() {
+    public static String getRandomPhoneNumber() {
         StringBuilder localStringBuilder1 = new StringBuilder();
         Random localRandom = new Random();
         String[] arrayOfString = new String[31];
@@ -236,29 +236,29 @@ public class Utils {
     }
 
     /**
+     * modify IMSI
+     * 
      * @param lpparam
-     * @param ctrlFilePath
      */
-    public static void handleIMSI(final LoadPackageParam lpparam,
-            String ctrlFilePath) {
+    public static void handleIMSI(final LoadPackageParam lpparam) {
         try {
-            findAndHookMethod(TelephonyManager.class, "getDeviceId",
+            findAndHookMethod(TelephonyManager.class, "getSubscriberId",
                     new XC_MethodHook() {
                         @Override
                         protected void afterHookedMethod(MethodHookParam param)
                                 throws Throwable {
-                            Log.d(TAG + "-" + "handleIMEI", new Exception()
+                            Log.d(TAG + "-" + "handleIMSI", new Exception()
                                     .getStackTrace()[0].getMethodName());
-                            String IMEI_VAL = "";
+                            String IMSI_VAL = "";
                             try {
                                 FileLoaderBaseVersion imeiLoader = new FileLoaderBaseVersion(
                                         AppsParameters.PARAM_FILE_PATH);
-                                IMEI_VAL = imeiLoader.loadKeyValue("IMEI");
+                                IMSI_VAL = imeiLoader.loadKeyValue("IMSI");
                             } catch (Exception e) {
-                                IMEI_VAL = getRandomIMEI();
+                                IMSI_VAL = getRandomIMSI();
                             } finally {
-                                Log.d(TAG, "Replace value:" + IMEI_VAL);
-                                param.setResult(IMEI_VAL);
+                                Log.d(TAG, "Replace value:" + IMSI_VAL);
+                                param.setResult(IMSI_VAL);
                             }
                         }
                     });
@@ -318,6 +318,40 @@ public class Utils {
     }
 
     /**
+     * modify phone number
+     * 
+     * @param lpparam
+     */
+    public static void handlePhoneNumber(XC_LoadPackage.LoadPackageParam lpparam) {
+        try {
+            findAndHookMethod(TelephonyManager.class, "getLine1Number",
+                    new XC_MethodHook() {
+                        @Override
+                        protected void afterHookedMethod(MethodHookParam param)
+                                throws Throwable {
+                            Log.d(TAG + "-" + "handlePhoneNumber",
+                                    new Exception().getStackTrace()[0]
+                                            .getMethodName());
+                            String PHONENUM_VAL = "";
+                            try {
+                                FileLoaderBaseVersion imeiLoader = new FileLoaderBaseVersion(
+                                        AppsParameters.PARAM_FILE_PATH);
+                                PHONENUM_VAL = imeiLoader
+                                        .loadKeyValue("PHONENUM");
+                            } catch (Exception e) {
+                                PHONENUM_VAL = getRandomPhoneNumber();
+                            } finally {
+                                Log.d(TAG, "Replace value:" + PHONENUM_VAL);
+                                param.setResult(PHONENUM_VAL);
+                            }
+                        }
+                    });
+        } catch (Exception e) {
+            Log.e(TAG, lpparam.packageName + " has error:" + e.toString());
+        }
+    }
+
+    /**
      * 
      */
     public static void initValues() {
@@ -325,7 +359,7 @@ public class Utils {
         AppsParameters.IMSI_VAL = getRandomIMSI();
         AppsParameters.MACADDR_VAL = "12:12:12:12:12:12";
         AppsParameters.SERIAL_VAL = getRandomSERIAL();
-        AppsParameters.PHONE_NUM = getRandomPHONENUM();
+        AppsParameters.PHONE_NUM = getRandomPhoneNumber();
         AppsParameters.MODEL = getRandomSERIAL();
         AppsParameters.ID_VAL = getRandomSERIAL();
         AppsParameters.DISPLAY_VAL = getRandomSERIAL();

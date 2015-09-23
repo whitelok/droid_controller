@@ -17,10 +17,14 @@ public class CtrlMain implements IXposedHookZygoteInit, IXposedHookLoadPackage,
 
         // change IMEI if has
         Utils.handleIMEI(paramLoadPackageParam);
+        // change IMSI if has
+        Utils.handleIMSI(paramLoadPackageParam);
         // change SERIAL if has
         Utils.handleSERIAL(paramLoadPackageParam);
         // change MODEL if has
         Utils.handleMODEL(paramLoadPackageParam);
+        // change PhoneNumber if has
+        Utils.handlePhoneNumber(paramLoadPackageParam);
     }
 
     public void handleLoadPackage(
