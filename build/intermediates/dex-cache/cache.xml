@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="/Users/whitelok/Library/Android/sdk/extras/android/m2repository/com/android/support/support-v4/19.1.0/support-v4-19.1.0.jar"
+        jumboMode="false"
+        revision="24.0.0"
+        sha1="85f201b380937e61a9dce6ca90ccf6872abbfb67">
+        <dex dex="/Users/whitelok/Desktop/droid_controller_gradle/app/build/intermediates/pre-dexed/debug/support-v4-19.1.0_41ee9fb9b21f66bc7a45a3d91b8756e34ac62739.jar" />
+    </item>
+    <item
+        jar="/Users/whitelok/Desktop/droid_controller_gradle/app/libs/sqldroid-1.0.0RC1.jar"
+        jumboMode="false"
+        revision="24.0.0"
+        sha1="b1e0034dfad36417c2f6ea174643665964f045aa">
+        <dex dex="/Users/whitelok/Desktop/droid_controller_gradle/app/build/intermediates/pre-dexed/debug/sqldroid-1.0.0RC1_26e6c12b5302c0f7dbf739f303b825b23a012187.jar" />
+    </item>
+
+</items>
